@@ -1,0 +1,70 @@
+/* An editorial tour of the real product. No recreated app controls. */
+.tour-section { padding-top: 80px; padding-bottom: 110px; }
+.tour-section .section-heading { margin: 0 auto 44px; }
+.tour-section .section-heading h2 { font-size: clamp(36px,4.5vw,60px); line-height: 1.06; font-weight: 500; }
+.tour-section .section-heading p { max-width: 550px; }
+.product-tour { position: relative; isolation: isolate; }
+.product-tour::before { content: ''; position: absolute; z-index: -1; pointer-events: none; inset: 10% -4% 20%; background: radial-gradient(ellipse at 50% 30%,#2299d816,transparent 68%); }
+.tour-tabs { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin: 0 0 22px; }
+.tour-tab { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 16px 18px; min-height: 64px; color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border-subtle); border-radius: 14px; background: color-mix(in srgb,var(--bg-card) 35%,transparent); font-size: 13px; font-weight: 500; line-height: 1.4; transition: color .2s,background .2s,border-color .2s; }
+.tour-tab-number { font: 11px/1.2 monospace; color: var(--text-muted); }
+.tour-tab:hover { color: var(--text-primary); border-color: var(--border-medium); background: var(--bg-card); }
+.tour-tab[aria-selected=true] { color: var(--text-primary); border-color: var(--border-accent); background: linear-gradient(135deg,#2299d820,#2299d806),var(--bg-card); box-shadow: inset 0 1px 0 #ffffff08; }
+.tour-tab[aria-selected=true] .tour-tab-number { color: var(--brand-logo-light); }
+.tour-panels { display: grid; gap: 48px; }
+[data-tour-ready] .tour-panels { gap: 0; }
+[data-tour-ready] .tour-panel { grid-area: 1/1; }
+.tour-panel { min-width: 0; }
+.tour-panel[inert] { pointer-events: none; }
+.tour-figure { margin: 0; }
+.tour-frame { overflow: hidden; position: relative; border: 1px solid var(--border-medium); border-radius: 22px; background: #151615; box-shadow: 0 24px 70px #00000024,0 0 55px #2299d80b,inset 0 1px 0 #ffffff0a; }
+.tour-frame-bar { min-height: 48px; padding: 6px 14px 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-subtle); }
+.tour-frame-label { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text-secondary); letter-spacing: .02em; }
+.tour-frame-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-logo-light); box-shadow: 0 0 12px #2299d85a; }
+.tour-fullscreen { display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; min-height: 36px; border-radius: 8px; border: 1px solid var(--border-subtle); color: var(--text-secondary); text-decoration: none; font-size: 11px; transition: background .2s,color .2s; }
+.tour-fullscreen:hover { background: var(--bg-card); color: var(--text-primary); }
+.tour-screen { aspect-ratio: 2600/1492; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #111312; }
+.tour-image-wrap { position: relative; height: 100%; aspect-ratio: var(--image-ratio); max-width: 100%; }
+.tour-screenshot { display: block; width: 100%; height: 100%; object-fit: contain; }
+.tour-spotlight { position: absolute; border: 1px solid #63cef2b0; border-radius: 10px; pointer-events: none; box-shadow: 0 0 0 3px #2299d80a,inset 0 0 20px #2299d80a; }
+.tour-caption { display: grid; grid-template-columns: 1fr 360px; align-items: center; gap: 48px; padding: 30px 12px 0; min-height: 244px; }
+.tour-chapter { display: inline-flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: .13em; color: var(--brand-logo-light); font-weight: 600; }
+.tour-chapter span { color: var(--text-muted); }
+.tour-story h3 { margin: 10px 0; font: 500 clamp(25px,2.6vw,32px)/1.2 'Bricolage Grotesque',Inter,sans-serif; letter-spacing: -.025em; color: var(--text-primary); }
+.tour-story p { margin: 0; max-width: 550px; color: var(--text-secondary); font-size: 14px; line-height: 1.7; }
+.tour-detail-hint { display: inline-flex; gap: 8px; align-items: center; margin-top: 18px; font-size: 11px; color: var(--text-muted); }
+.tour-detail-hint span { color: var(--brand-logo-light); }
+.tour-detail { min-width: 0; overflow: hidden; border: 1px solid var(--border-medium); border-radius: 14px; background: #171918; box-shadow: 0 8px 25px #00000016; }
+.tour-detail-label { display: flex; justify-content: space-between; gap: 8px; padding: 10px 13px; background: var(--bg-card); color: var(--text-secondary); font-size: 10px; border-bottom: 1px solid var(--border-subtle); }
+.tour-detail-label>span:last-child { color: var(--brand-logo-light); }
+.tour-detail-crop { display: block; width: 100%; height: 176px; }
+.tour-cta { text-align: center; margin-top: 44px; }
+.tour-cta p { margin: 12px 0 0; color: var(--text-muted); font-size: 12px; }
+html.light .tour-frame { box-shadow: 0 20px 55px #102b4418,0 0 40px #2299d809; }
+html.light .tour-tab[aria-selected=true] { background: linear-gradient(135deg,#2299d81a,#2299d806),var(--bg-card); }
+@media (max-width:1000px) {
+  .tour-tab { padding: 13px 12px; gap: 8px; font-size: 12px; }
+  .tour-caption { grid-template-columns: 1fr 300px; gap: 28px; padding-inline: 4px; }
+}
+@media (max-width:700px) {
+  .tour-section { padding-top: 64px; padding-bottom: 80px; }
+  .tour-section .section-heading { margin-bottom: 30px; }
+  .tour-section .section-heading p { font-size: 14px; }
+  .tour-tabs { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-bottom: 18px; }
+  .tour-tab { min-height: 60px; padding: 12px; }
+  .tour-frame { border-radius: 14px; }
+  .tour-frame-bar { min-height: 48px; padding: 4px 8px 4px 12px; }
+  .tour-frame-label { font-size: 9px; gap: 7px; }
+  .tour-fullscreen { font-size: 10px; min-height: 40px; padding: 6px 8px; gap: 5px; }
+  .tour-fullscreen svg { width: 13px; }
+  .tour-spotlight { border-radius: 5px; }
+  .tour-caption { grid-template-columns: 1fr; gap: 22px; padding: 26px 0 0; }
+  .tour-story { min-height: 172px; }
+  .tour-story h3 { font-size: 27px; }
+  .tour-detail { width: 100%; max-width: 440px; justify-self: center; }
+  .tour-detail-crop { height: 178px; }
+  .tour-detail-label { font-size: 11px; }
+  .tour-detail-hint { margin-top: 14px; }
+  .tour-cta { margin-top: 32px; }
+}
+@media (prefers-reduced-motion:reduce) { .tour-tab,.tour-fullscreen { transition: none; } }
