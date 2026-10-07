@@ -132,6 +132,8 @@ if (gallery) {
   }
   function positionFallbackClose() {
     if (!fallbackOpen) return;
+    const margin = innerWidth <= 767 ? 12 : 24;
+    fallback.style.width = `${Math.max(1, Math.min(gallery.clientWidth - 2 * margin, (Math.min(gallery.clientHeight, innerHeight) - 2 * margin) * 7122 / 3717))}px`;
     const rect = fallback.getBoundingClientRect(), stage = gallery.getBoundingClientRect();
     close.style.left = `${rect.left - stage.left + 8}px`;
     close.style.top = `${rect.top - stage.top + 8}px`;
@@ -158,6 +160,10 @@ if (gallery) {
       restoreFocus();
     } else gallery._mw?.close();
   }
+  gallery.addEventListener('pointerdown', event => {
+    const card = event.target.closest('.made-card');
+    if (card) trigger = card;
+  }, true);
   close.hidden = true;
   close.addEventListener('click', closePreview);
   gallery.addEventListener('click', event => {
@@ -172,6 +178,8 @@ if (gallery) {
     }
   }, true);
   gallery.addEventListener('keydown', event => {
+    const card = event.target.closest('.made-card');
+    if (card && (event.key === 'Enter' || event.key === ' ')) trigger = card;
     if (!fallbackOpen && !gallery.hasAttribute('data-mw-open')) return;
     if (event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); closePreview(); }
     if (event.key === 'Tab') { event.preventDefault(); event.stopImmediatePropagation(); close.focus({ preventScroll: true }); }
@@ -183,6 +191,15 @@ if (gallery) {
       isolate(); cancelAnimationFrame(positionFrame); positionClose();
     } else if (!fallbackOpen && inertElements.size) restoreFocus();
   }).observe(gallery, { attributes: true, attributeFilter: ['data-mw-open'] });
+  gallery.addEventListener('webglcontextlost', () => {
+    const active = gallery._mw?.state().activeIndex;
+    const card = gallery.hasAttribute('data-mw-open') && cards[active];
+    queueMicrotask(() => {
+      if (inertElements.size) restoreFocus();
+      restore();
+      if (card) openFallback(card);
+    });
+  }, true);
   preference.addEventListener('change', () => {
     if (!fallbackOpen && inertElements.size) restoreFocus();
   });
