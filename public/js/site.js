@@ -76,3 +76,5 @@ if (!reducedMotion.matches && 'IntersectionObserver' in window) {
   }, { rootMargin: '200px' });
   observer.observe(diagram);
 }
+
+import './made-gallery.js';

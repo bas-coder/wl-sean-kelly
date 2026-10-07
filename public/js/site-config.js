@@ -1,26 +1,26 @@
-// Public launch configuration, verified against BJCRUM on 24 September 2026.
-// All amounts are USD. Update and rebuild when the partner changes offers.
+// Pricing confirmed by the owner in chat. Original console screenshots were not independently verified.
+// All amounts are USD.
 export const site = {
-  name: 'BJCRUM', origin: 'https://bjcrum.com', app: 'https://app.bjcrum.com/',
-  docs: 'https://app.bjcrum.com/docs', support: 'fax@bjcrum.com',
+  name: 'Super Intelligence Coder', tagline: 'Think. Build. Deploy. Use.', origin: 'https://superintelligencecoder.ai', app: 'https://app.superintelligencecoder.ai/',
+  docs: 'https://docs.superintelligencecoder.ai/', support: 'support@superintelligencecoder.ai',
 };
 export const plans = {
   solo: [
-    { id: 'free', name: 'Free', credits: 60, price: 0, cadence: 'once' },
-    { id: 'solo-200', name: 'Solo 200', credits: 200, price: 29, cadence: 'monthly' },
-    { id: 'solo-515', name: 'Solo 515', credits: 515, price: 59, cadence: 'monthly' },
-    { id: 'solo-1030', name: 'Solo 1030', credits: 1030, price: 119, cadence: 'monthly' },
+    { id: 'solo-200', name: 'Starter', projects: 3, credits: 200, price: 29, cadence: 'monthly' },
+    { id: 'solo-515', name: 'Pro', projects: 5, credits: 515, price: 59, cadence: 'monthly' },
+    { id: 'solo-1030', name: 'Scale', projects: 10, credits: 1030, price: 119, cadence: 'monthly' },
   ],
   agency: [
-    { id: 'agency-1100', name: 'Agency 1100', credits: 1100, price: 149, cadence: 'monthly' },
-    { id: 'agency-2535', name: 'Agency 2535', credits: 2535, price: 299, cadence: 'monthly' },
-    { id: 'agency-4455', name: 'Agency 4455', credits: 4455, price: 549, cadence: 'monthly' },
+    { id: 'agency-1100', name: 'Team', projects: 10, credits: 1100, price: 149, cadence: 'monthly' },
+    { id: 'agency-2535', name: 'Studio', projects: 30, credits: 2535, price: 299, cadence: 'monthly' },
+    { id: 'agency-4455', name: 'Scale', projects: 50, credits: 4455, price: 549, cadence: 'monthly' },
   ],
 };
+export const topUp = { pricePerCredit: 0.20, examplePrice: 20, exampleCredits: 100 };
 export const benefits = {
   solo: [
     'The full AI builder with live preview', 'Publish to a live URL, or your own custom domain',
-    'BJCRUM Max, the deep agent, on every build', 'Code export and GitHub sync',
+    'Deep AI reasoning for your builds', 'Code export and GitHub sync',
     '10 AI + 20 stock images per project', 'Version history and restore',
   ],
   agency: [

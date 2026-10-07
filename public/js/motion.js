@@ -188,7 +188,7 @@ const traces = lines.map((line) => {
   const path = source.cloneNode(false);
   path.removeAttribute('id');
   path.setAttribute('fill', 'none');
-  path.setAttribute('stroke', 'var(--brand-logo-light, #2299d8)');
+  path.setAttribute('stroke', 'var(--brand-logo-light, #F9B54D)');
   path.setAttribute('stroke-width', '.7');
   path.setAttribute('stroke-linecap', 'round');
   path.setAttribute('stroke-linejoin', 'round');
@@ -245,3 +245,52 @@ desktop.addEventListener('change', configure);
 addEventListener('scroll', schedule, { passive: true });
 addEventListener('resize', schedule, { passive: true });
 configure();
+
+// Pointer-driven hero grid. Its mask cuts out content before the retained blur.
+(() => {
+  const hero = document.querySelector('#hero');
+  const grid = hero?.querySelector('.hero-shimmer');
+  const highlight = grid?.querySelector('.shimmer-highlight');
+  if (!hero || !grid || !highlight) return;
+  const canHover = matchMedia('(hover:hover) and (pointer:fine)');
+  const protectedElements = [...hero.querySelectorAll('.hero-title,.hero-description,.framer-vocpb,.site-button.primary,.prompt-card,.framer-1uqwldy')];
+  let frame = 0, pointer = null;
+  function hide() { pointer = null; grid.classList.remove('is-hovered'); }
+  function updateMask() {
+    const bounds = grid.getBoundingClientRect();
+    const boxes = protectedElements.map(el => el.getBoundingClientRect()).filter(b => b.width && b.height);
+    if (!bounds.width || !boxes.length) return;
+    const left = Math.max(0, Math.min(...boxes.map(b => b.left - bounds.left)) - 24);
+    const right = Math.min(bounds.width, Math.max(...boxes.map(b => b.right - bounds.left)) + 24);
+    const top = Math.max(0, Math.min(...boxes.map(b => b.top - bounds.top)) - 24);
+    const bottom = Math.min(bounds.height, Math.max(...boxes.map(b => b.bottom - bounds.top)) + 24);
+    // Blur only the mask boundary; the expanded black rectangle remains opaque inside.
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${bounds.width}" height="${bounds.height}" viewBox="0 0 ${bounds.width} ${bounds.height}"><defs><filter id="feather" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter><mask id="cut" maskUnits="userSpaceOnUse"><rect width="100%" height="100%" fill="white"/><rect x="${left}" y="${top}" width="${right-left}" height="${bottom-top}" rx="24" fill="black" filter="url(#feather)"/><rect x="${left+12}" y="${top+12}" width="${Math.max(0,right-left-24)}" height="${Math.max(0,bottom-top-24)}" fill="black"/></mask></defs><rect width="100%" height="100%" fill="white" mask="url(#cut)"/></svg>`;
+    const mask = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+    grid.style.maskImage = mask; grid.style.webkitMaskImage = mask;
+    grid.style.maskSize = '100% 100%'; grid.style.webkitMaskSize = '100% 100%';
+  }
+  function move(event) {
+    if (!canHover.matches || preference.matches || event.pointerType === 'touch') return hide();
+    pointer = {x:event.clientX,y:event.clientY};
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      if (!pointer) return;
+      const b = grid.getBoundingClientRect();
+      highlight.style.transform = `translate(${pointer.x-b.left-180}px,${pointer.y-b.top-180}px)`;
+      grid.classList.add('is-hovered');
+    });
+  }
+  hero.addEventListener('pointermove',move,{passive:true});
+  hero.addEventListener('pointerleave',hide);
+  window.addEventListener('blur',hide);
+  window.addEventListener('scroll',hide,{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)hide();});
+  canHover.addEventListener('change',hide); preference.addEventListener('change',hide);
+  const observer = new ResizeObserver(updateMask);
+  observer.observe(hero); protectedElements.forEach(el => observer.observe(el));
+  window.addEventListener('resize',()=>{hide();updateMask();});
+  document.fonts?.ready.then(updateMask);
+  updateMask();
+})();

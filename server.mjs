@@ -20,4 +20,4 @@ createServer(async (req, res) => {
     if (req.method === 'HEAD') res.end();
     else createReadStream(path).on('error', () => res.destroy()).pipe(res);
   } catch { res.writeHead(404, { 'Content-Type': 'text/plain' }); res.end('Not found'); }
-}).listen(port, '127.0.0.1', () => console.log(`BJCRUM preview: http://127.0.0.1:${port}\nPress Ctrl+C to stop.`));
+}).listen(port, '127.0.0.1', () => console.log(`Super Intelligence Coder preview: http://127.0.0.1:${port}\nPress Ctrl+C to stop.`));

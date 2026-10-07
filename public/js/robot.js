@@ -23,11 +23,12 @@
   camera.position.set(0, .5, 3.25);
   camera.lookAt(0, .5, 0);
   scene.add(new THREE.AmbientLight(0xffffff, .95));
-  for (const [color, intensity, position] of [[0xffffff, 1.8, [2,3,3]], [0xdbeafe,.9,[-2.5,1.8,2]], [0x38bdf8,1,[0,3.5,-2]]]) {
+  for (const [color, intensity, position] of [[0xffffff, 1.8, [2,3,3]], [0xffffff,.9,[-2.5,1.8,2]], [0xffffff,1,[0,3.5,-2]]]) {
     const light = new THREE.DirectionalLight(color, intensity);
     light.position.set(...position); scene.add(light);
   }
-  const accent = new THREE.PointLight(0x0284c7, 3, 6);
+  const accent = new THREE.PointLight(getComputedStyle(document.documentElement).getPropertyValue("--palette-emphasis").trim(), 3, 6);
+  new MutationObserver(() => accent.color.set(getComputedStyle(document.documentElement).getPropertyValue("--palette-emphasis").trim())).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   accent.position.set(0,-.2,1.2); scene.add(accent);
   let model, frame = 0, visible = false, failed = false;
   const target = { x: 0, y: 0 };
@@ -72,6 +73,16 @@
     model.position.set(-.02,.45,0); model.scale.setScalar(.59);
     model.traverse((child) => {
       if (child.isMesh && child.material) {
+        // Neutral albedo preserves surface detail while letting the accent light supply color.
+        child.material.onBeforeCompile = (shader) => {
+          shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', `
+            #include <map_fragment>
+            float neutralLuminance = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+            diffuseColor.rgb = vec3(neutralLuminance);
+          `);
+        };
+        child.material.customProgramCacheKey = () => 'neutral-robot-albedo-v1';
+        child.material.needsUpdate = true;
         child.material.envMapIntensity = 1.2;
         if (child.material.roughness !== undefined) child.material.roughness = Math.min(child.material.roughness,.28);
       }
