@@ -78,3 +78,5 @@ if (!reducedMotion.matches && 'IntersectionObserver' in window) {
 }
 
 import './made-gallery.js';
+
+import './faq.js';

@@ -261,3 +261,19 @@ html.light .lifecycle-room .lc-interface path { stroke: #8A978D; opacity: 1; str
 html.light .lifecycle-room .lc-interface path.lc-chart { stroke: #B5A080; }
 html.dark .lifecycle-room .lc-interface path { stroke: #65766B; opacity: 1; stroke-opacity: 1; }
 html.dark .lifecycle-room .lc-interface path.lc-chart { stroke: #938369; }
+
+/* Reference FAQ behavior; existing copy and typography are retained. */
+#faq .faq-list{gap:8px}
+#faq .faq-item{border-radius:10px;background:var(--bg-card);border-color:var(--border-subtle);transition:background-color 150ms cubic-bezier(.4,0,.2,1),border-color 150ms cubic-bezier(.4,0,.2,1)}
+@media(hover:hover){#faq .faq-item:hover{background:var(--bg-card-hover);border-color:transparent}}
+#faq .faq-item.is-open,#faq .faq-item[open]{background:var(--bg-raised);border-color:transparent}
+#faq .faq-question{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;padding:19px 22px;border:0;border-radius:inherit;background:transparent;color:var(--text-primary);font:500 14px/1.5 Inter,sans-serif;text-align:left;cursor:pointer}
+#faq .faq-question:focus-visible,#faq summary:focus-visible{outline:2px solid var(--border-focus);outline-offset:3px}
+#faq .faq-question>span,#faq summary>span{display:flex;align-items:center;flex:none;color:var(--text-secondary);font-size:18px}
+#faq .faq-item[open] summary span{transform:none}
+#faq .faq-question svg,#faq summary svg{transition:transform 300ms cubic-bezier(.4,0,.2,1)}
+#faq .is-open .faq-question svg,#faq [open] summary svg{transform:rotate(180deg)}
+#faq .faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows 300ms cubic-bezier(0,0,.2,1)}
+#faq .is-open .faq-answer{grid-template-rows:1fr}
+#faq .faq-answer-inner{min-height:0;overflow:hidden}
+@media(prefers-reduced-motion:reduce){#faq .faq-item,#faq .faq-answer,#faq .faq-question svg,#faq summary svg{transition:none}}

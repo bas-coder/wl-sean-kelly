@@ -134,7 +134,10 @@ if (gallery) {
     if (!fallbackOpen) return;
     const margin = innerWidth <= 767 ? 12 : 24;
     fallback.style.width = `${Math.max(1, Math.min(gallery.clientWidth - 2 * margin, (Math.min(gallery.clientHeight, innerHeight) - 2 * margin) * 7122 / 3717))}px`;
-    const rect = fallback.getBoundingClientRect(), stage = gallery.getBoundingClientRect();
+    let rect = fallback.getBoundingClientRect();
+    if (rect.top < margin || rect.bottom > innerHeight - margin) gallery.scrollIntoView({ block: 'center', behavior: 'instant' });
+    rect = fallback.getBoundingClientRect();
+    const stage = gallery.getBoundingClientRect();
     close.style.left = `${rect.left - stage.left + 8}px`;
     close.style.top = `${rect.top - stage.top + 8}px`;
   }
